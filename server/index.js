@@ -18,7 +18,11 @@ var CORS_WHITELIST = [
 
   // Favor to friends :)
   'http://rollcall.audio',
-  'https://rollcall.audio'
+  'https://rollcall.audio',
+
+  // Partido Pirata
+  'http://torrent.partidopirata.org',
+  'https://torrent.partidopirata.org'
 ]
 
 var secret
@@ -51,12 +55,12 @@ app.use(compress())
 app.use(function (req, res, next) {
   // Force SSL
   if (config.isProd && req.protocol !== 'https') {
-    return res.redirect('https://' + (req.hostname || 'instant.io') + req.url)
+    return res.redirect('https://' + (req.hostname || 'torrent.partidopirata.org') + req.url)
   }
 
   // Redirect www to non-www
-  if (config.isProd && req.hostname === 'www.instant.io') {
-    return res.redirect('https://instant.io' + req.url)
+  if (config.isProd && req.hostname === 'www.torrent.partidopirata.org') {
+    return res.redirect('https://torrent.partidopirata.org' + req.url)
   }
 
   // Use HTTP Strict Transport Security
@@ -79,7 +83,7 @@ app.use(function (req, res, next) {
   res.header('X-Content-Type-Options', 'nosniff')
 
   // Prevent rendering of site within a frame.
-  res.header('X-Frame-Options', 'DENY')
+  res.header('X-Frame-Options', 'SAMEORIGIN')
 
   // Enable the XSS filter built into most recent web browsers. It's usually
   // enabled by default anyway, so role of this headers is to re-enable for this
@@ -96,7 +100,7 @@ app.use(express.static(path.join(__dirname, '../static')))
 
 app.get('/', function (req, res) {
   res.render('index', {
-    title: 'Instant.io - Streaming file transfer over WebTorrent'
+    title: 'Envio de arquivos via Web Torrent'
   })
 })
 
@@ -145,8 +149,8 @@ app.get('/_rtcConfig', cors({
 
 app.get('*', function (req, res) {
   res.status(404).render('error', {
-    title: '404 Page Not Found - Instant.io',
-    message: '404 Not Found'
+    title: '404 Página não encontrada',
+    message: '404 Não encontrado. Reclame em https://github.com/piratas/instant.io/issues'
   })
 })
 
@@ -154,7 +158,7 @@ app.get('*', function (req, res) {
 app.use(function (err, req, res, next) {
   error(err)
   res.status(500).render('error', {
-    title: '500 Internal Server Error - Instant.io',
+    title: '500 Erro Interno',
     message: err.message || err
   })
 })

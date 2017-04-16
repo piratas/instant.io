@@ -43,7 +43,7 @@ init()
 
 function init () {
   if (!WebTorrent.WEBRTC_SUPPORT) {
-    util.error('This browser is unsupported. Please use a browser with WebRTC support.')
+    util.error('Este navegador não é suportado. Por favor, utilize um navegador com suporte a WebRTC.')
   }
 
   // For performance, create the client immediately
@@ -90,13 +90,13 @@ function getRtcConfig (cb) {
     timeout: 5000
   }, function (err, res, data) {
     if (err || res.statusCode !== 200) {
-      cb(new Error('Could not get WebRTC config from server. Using default (without TURN).'))
+      cb(new Error('Bem vinda(o) ao torrent.partidopirata.org. Para começar a semear arquivos, siga as instruções abaixo'))
     } else {
       var rtcConfig
       try {
         rtcConfig = JSON.parse(data)
       } catch (err) {
-        return cb(new Error('Got invalid WebRTC config from server: ' + data))
+        return cb(new Error('Configuração WebRTC inválida: ' + data))
       }
       debug('got rtc config: %o', rtcConfig)
       cb(null, rtcConfig)
@@ -105,7 +105,7 @@ function getRtcConfig (cb) {
 }
 
 function onFiles (files) {
-  debug('got files:')
+  debug('recebidos arquivos:')
   files.forEach(function (file) {
     debug(' - %s (%s bytes)', file.name, file.size)
   })
@@ -132,9 +132,9 @@ function downloadTorrent (torrentId) {
   })
 
   if (disallowed) {
-    util.log('File not found ' + torrentId)
+    util.log('Arquivo não encontrado ' + torrentId)
   } else {
-    util.log('Downloading torrent from ' + torrentId)
+    util.log('Baixando torrent ' + torrentId)
     getClient(function (err, client) {
       if (err) return util.error(err)
       client.add(torrentId, onTorrent)
@@ -143,7 +143,7 @@ function downloadTorrent (torrentId) {
 }
 
 function downloadTorrentFile (file) {
-  util.log('Downloading torrent from <strong>' + file.name + '</strong>')
+  util.log('Baixando torrent <strong>' + file.name + '</strong>')
   getClient(function (err, client) {
     if (err) return util.error(err)
     client.add(file, onTorrent)
@@ -152,7 +152,7 @@ function downloadTorrentFile (file) {
 
 function seed (files) {
   if (files.length === 0) return
-  util.log('Seeding ' + files.length + ' files')
+  util.log('Semeando ' + files.length + ' arquivos')
 
   // Seed from WebTorrent
   getClient(function (err, client) {
@@ -170,16 +170,16 @@ function onTorrent (torrent) {
 
   var torrentFileName = path.basename(torrent.name, path.extname(torrent.name)) + '.torrent'
 
-  util.log('"' + torrentFileName + '" contains ' + torrent.files.length + ' files:')
+  util.log('"' + torrentFileName + '" contém ' + torrent.files.length + ' arquivos:')
   torrent.files.forEach(function (file) {
     util.log('&nbsp;&nbsp;- ' + file.name + ' (' + prettierBytes(file.length) + ')')
   })
 
   util.log(
     'Torrent info hash: ' + torrent.infoHash + ' ' +
-    '<a href="/#' + torrent.infoHash + '" onclick="prompt(\'Share this link with anyone you want to download this torrent:\', this.href);return false;">[Share link]</a> ' +
+    '<a href="/#' + torrent.infoHash + '" onclick="prompt(\'Compartilhe este link com qualquer pessoa que você quer que baixe este torrent:\', this.href);return false;">[Link de compartilhamento]</a> ' +
     '<a href="' + torrent.magnetURI + '" target="_blank">[Magnet URI]</a> ' +
-    '<a href="' + torrent.torrentFileBlobURL + '" target="_blank" download="' + torrentFileName + '">[Download .torrent]</a>'
+    '<a href="' + torrent.torrentFileBlobURL + '" target="_blank" download="' + torrentFileName + '">[Baixar arquivo .torrent]</a>'
   )
 
   function updateSpeed () {
@@ -189,15 +189,15 @@ function onTorrent (torrent) {
     if (torrent.done) {
       remaining = 'Done.'
     } else {
-      remaining = moment.duration(torrent.timeRemaining / 1000, 'seconds').humanize()
-      remaining = remaining[0].toUpperCase() + remaining.substring(1) + ' remaining.'
+      remaining = moment.duration(torrent.timeRemaining / 1000, 'segundos').humanize()
+      remaining = remaining[0].toUpperCase() + remaining.substring(1) + ' restantes.'
     }
 
     util.updateSpeed(
       '<b>Peers:</b> ' + torrent.numPeers + ' ' +
-      '<b>Progress:</b> ' + progress + '% ' +
-      '<b>Download speed:</b> ' + prettierBytes(window.client.downloadSpeed) + '/s ' +
-      '<b>Upload speed:</b> ' + prettierBytes(window.client.uploadSpeed) + '/s ' +
+      '<b>Progresso:</b> ' + progress + '% ' +
+      '<b>Velocidade de download:</b> ' + prettierBytes(window.client.downloadSpeed) + '/s ' +
+      '<b>Velocidade de upload:</b> ' + prettierBytes(window.client.uploadSpeed) + '/s ' +
       '<b>ETA:</b> ' + remaining
     )
   }
@@ -223,7 +223,7 @@ function onTorrent (torrent) {
       a.target = '_blank'
       a.download = file.name
       a.href = url
-      a.textContent = 'Download ' + file.name
+      a.textContent = 'Baixar ' + file.name
       util.log(a)
     })
   })
