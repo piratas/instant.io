@@ -4,26 +4,26 @@ block body
   main
     picture.logo
       source(srcset='/logo.svg')
-      img(src='/logo.png' alt='Instant.io')
-    p.subtitle Streaming file transfer over <a href="http://webtorrent.io" target="_blank">WebTorrent</a> (torrents on the web)
+      img(src='/logo.png' alt='torrent.partidopirata.org')
+    p.subtitle Transfer&ecirc;ncia de arquivos via <a href="http://webtorrent.io" target="_blank">WebTorrent</a> - powered by Instant.io
 
     h1#logHeading(style='display: none') Log
     .speed
     .log
 
     section
-      h1 Start sharing
+      h1 Enviar
       p
-        | Drag-and-drop files to begin seeding. Or choose a file:
+        | Arraste e solte arquivos para enviar aqui ou procure no computador para criar um torrent novo:
         | #{ ' ' }
         input(type='file', name='upload', multiple)
 
     section
-      h1 Start downloading
+      h1 Receber
       form
-        label(for='torrentId') Download from a magnet link or info hash
+        label(for='torrentId') Baixe arquivos a partir de um magnet link ou info hash
         input(name='torrentId', placeholder='magnet:' required)
-        button(type='submit') Download
+        button(type='submit') Baixar&excl;
 
     footer
-      p: small Powered by <a href="http://webtorrent.io" target="_blank">WebTorrent</a>. 100% open source &amp; free software. Works in Chrome, Firefox, and Opera. Source code available on <a href="https://github.com/webtorrent/instant.io" target="_blank">GitHub</a>. © 2017 WebTorrent, LLC.
+      p: small Powered by <a href="http://webtorrent.io" target="_blank">WebTorrent</a> via <a href="http://instant.io" target="_blank">Instant.io</a>. 100% software livre. Funciona no Chrome, Firefox, e Opera. C&oacute;digo fonte dispon&iacute;vel no <a href="https://github.com/piratas/instant.io" target="_blank">GitHub</a>. © 2017 WebTorrent, LLC.
